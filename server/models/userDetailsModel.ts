@@ -25,5 +25,5 @@ const userDetailsSchema = new Schema(
 );
 
 type UserDetailsType = InferSchemaType<typeof userDetailsSchema>;
-const userDetails = model<UserDetailsType>('userDetails', userDetailsSchema);
-export { UserDetailsType, userDetails };
+const UserDetails = model<UserDetailsType>('userDetails', userDetailsSchema);
+export { UserDetailsType, UserDetails };

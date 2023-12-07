@@ -1,21 +1,23 @@
-import mongoose, { Schema, Document, Model } from 'mongoose';
+import mongoose, { Schema, InferSchemaType, model } from 'mongoose';
 
-interface ISector extends Document {
-  name: string;
-  children?: ISector[];
-}
-
-const sectorSchema = new Schema<ISector>({
-  name: {
-    type: String,
+const SectorSchema = new Schema({
+  manufacturing: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'ManufacturingSector',
     required: true,
   },
-  children: {
-    type: [{ type: Schema.Types.ObjectId, ref: 'Sector' }],
+  other: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'OtherSector',
+    required: true,
+  },
+  service: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'ServicesSector',
+    required: true,
   },
 });
 
-type SectorModel = Model<ISector>;
-const Sector: SectorModel = mongoose.model('Sector', sectorSchema);
-
-export { ISector, SectorModel, Sector };
+type SectorType = InferSchemaType<typeof SectorSchema>;
+const sector = model<SectorType>('sector', SectorSchema);
+export { SectorType, sector };

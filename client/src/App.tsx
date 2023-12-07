@@ -1,15 +1,15 @@
 import { FormEvent, useEffect, useState } from 'react';
 import './App.css';
 
+import { getUserDetailFromLocalStorage } from './utils/localStorage';
+import { handleErrorMessage } from './utils/handleErrorMessage';
 import SelectSectors from './components/SelectSectors';
 import FormAction from './components/forms/FormAction';
 import FormExtra from './components/forms/FormExtra';
+import DisplayData from './components/DisplayData';
 import NameInput from './components/NameInput';
 import { SectorItem } from './utils/types';
 import data from './index.json';
-import { getUserDetailFromLocalStorage } from './utils/localStorage';
-import { handleErrorMessage } from './utils/handleErrorMessage';
-import DisplayData from './components/DisplayData';
 
 function App() {
   const [name, setName] = useState('');

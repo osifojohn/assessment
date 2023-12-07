@@ -1,6 +1,6 @@
 import { Schema, InferSchemaType, model } from 'mongoose';
 
-const otherSectorSchema = new Schema({
+const OtherSectorSchema = new Schema({
   name: {
     type: String,
     required: true,
@@ -27,6 +27,6 @@ const otherSectorSchema = new Schema({
   ],
 });
 
-type otherSectorType = InferSchemaType<typeof otherSectorSchema>;
-const otherSector = model<otherSectorType>('otherSector', otherSectorSchema);
-export { otherSectorType, otherSector };
+type OtherSectorType = InferSchemaType<typeof OtherSectorSchema>;
+const OtherSector = model<OtherSectorType>('otherSector', OtherSectorSchema);
+export { OtherSectorType, OtherSector };
