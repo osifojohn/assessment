@@ -11,11 +11,9 @@ export const addUserDetails = asyncHandler(
   async (req: Request, res: Response) => {
     const reqData = req.body;
 
-    const response = await userDetails.create(reqData);
+    const response = new userDetails(reqData);
 
-    if (response) {
-      console.log(response);
-    }
+    response.save();
 
     res.status(STATUSCODE.CREATED).json({
       data: response,
@@ -43,6 +41,8 @@ export const updateUserDetails = asyncHandler(
         new: true,
       }
     );
+
+    updatedUserInfo?.save();
 
     res.status(STATUSCODE.CREATED).json(updatedUserInfo);
   }
