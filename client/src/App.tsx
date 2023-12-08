@@ -18,7 +18,8 @@ import NameInput from './components/NameInput';
 import { SectorItem, UserData } from './utils/types';
 import useFetchSectorsFormData from './useFetch';
 
-import data from './index.json';
+//sectors data
+// import data from './index.json';
 
 function App() {
   const [name, setName] = useState('');
@@ -99,7 +100,7 @@ function App() {
         <form onSubmit={handleSubmit} className="grid justify-center">
           <NameInput name={name} setName={setName} />
           <SelectSectors
-            data={fetchedSectorsFormData}
+            data={fetchedSectorsFormData as SectorItem[]}
             onChange={setSectors}
             sectors={sectors}
             openDropDown={openDropDown}

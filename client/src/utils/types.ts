@@ -50,7 +50,7 @@ export interface FormActionProps {
   isLoading?: boolean;
   action: 'submit' | 'button' | 'reset';
   text?: string;
-  handleClick?: any;
+  handleClick?: () => void;
 }
 
 export interface InputProps {
