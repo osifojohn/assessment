@@ -109,11 +109,7 @@ function App() {
             agreeToTerms={agreeToTerms}
             setAgreeToTerms={setAgreeToTerms}
           />
-          <FormAction
-            action="submit"
-            isLoading={isLoading}
-            text={!isEditing ? 'Submit' : 'Edit'}
-          />
+          <FormAction action="submit" isLoading={isLoading} text="Submit" />
         </form>
       ) : (
         <DisplayData
