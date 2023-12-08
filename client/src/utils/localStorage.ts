@@ -1,11 +1,11 @@
-import { localStorageKey, formValuesTypes } from './types';
+import { localStorageKey, formValuesTypes, UserData } from './types';
 
 export const addUserDetailToLocalStorage = ({
   key,
   val,
 }: {
   key: localStorageKey;
-  val: formValuesTypes;
+  val: formValuesTypes | UserData;
 }) => {
   localStorage.setItem(key, JSON.stringify(val));
 };

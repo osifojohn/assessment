@@ -6,9 +6,20 @@ import {
 } from 'react';
 
 export interface SectorItem {
+  _id?: string;
   name: string;
   children?: SectorItem[];
 }
+
+export type UserData = {
+  name: string;
+  sectors: {
+    name: string;
+    _id?: string;
+  }[];
+  agreeToTerms: boolean;
+  _id?: string;
+};
 
 export interface SelectSectorsGroupInterface {
   children: JSX.Element | JSX.Element[] | null;
@@ -36,9 +47,10 @@ export interface SelectToggleProps {
 }
 
 export interface FormActionProps {
-  isLoading: boolean;
+  isLoading?: boolean;
   action: 'submit' | 'button' | 'reset';
-  text: string;
+  text?: string;
+  handleClick?: any;
 }
 
 export interface InputProps {
@@ -67,6 +79,12 @@ export interface labelProps {
   labelFor: string;
   labelText: string;
   customClassName?: string;
+}
+
+export interface displayUserDataProps {
+  userData: UserData;
+  setIsDisplayUserData: (arg: boolean) => void;
+  setIsEditing: (arg: boolean) => void;
 }
 
 export type localStorageKey = string;

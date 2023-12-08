@@ -1,15 +1,29 @@
-export default function DisplayData() {
+import { displayUserDataProps } from '../utils/types';
+import FormAction from './forms/FormAction';
+
+export default function DisplayData({
+  userData,
+  setIsDisplayUserData,
+  setIsEditing,
+}: displayUserDataProps) {
+  const handleClick = () => {
+    setIsDisplayUserData(false);
+    setIsEditing(true);
+  };
   return (
     <div>
-      {/* <h2>User Information</h2>
-      <p>Name: {userData.name}</p>
-      <p>Sectors: {userData.sectors.join(', ')}</p>
-      <p>Agreed to terms: {userData.agreed ? 'Yes' : 'No'}</p> */}
-
-      <h2>User Information</h2>
-      <p>Name: </p>
-      <p>Sectors: </p>
-      <p>Agreed to terms</p>
+      <div>
+        <h2>User Information</h2>
+        <p>Name: {userData?.name}</p>
+        <div>
+          <p>Sectors: </p>
+          {userData.sectors.map((sector, index) => (
+            <p key={index}>{sector.name}</p>
+          ))}
+        </div>
+        <p>Agreed to terms: {userData.agreeToTerms ? 'Yes' : 'No'}</p>
+      </div>
+      <FormAction action="button" text="Edit" handleClick={handleClick} />
     </div>
   );
 }

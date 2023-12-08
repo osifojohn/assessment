@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
 import asyncHandler from 'express-async-handler';
 
-import { UserDetails } from '../models/userDetailsModel';
 import { STATUSCODE } from '../types';
+import { UserDetails } from '../models/userDetailsModel';
 
 //@desc POST UserDetails
 //@route GET /user-details
@@ -24,8 +24,8 @@ export const addUserDetails = asyncHandler(
 //@access public
 export const updateUserDetails = asyncHandler(
   async (req: Request, res: Response) => {
-    const { userId, userDetails: userInformation } = req.body;
-    const userInfo = await UserDetails.findById(userId);
+    const { _id, name, sectors, agreeToTerms } = req.body;
+    const userInfo = await UserDetails.findById(_id);
 
     if (!userInfo) {
       res.status(STATUSCODE.BAD_REQUEST);
@@ -33,14 +33,12 @@ export const updateUserDetails = asyncHandler(
     }
 
     const updatedUserInfo = await UserDetails.findByIdAndUpdate(
-      userId,
-      userInformation,
+      _id,
+      { name, sectors, agreeToTerms },
       {
         new: true,
       }
     );
-
-    updatedUserInfo?.save();
 
     res.json(updatedUserInfo);
   }

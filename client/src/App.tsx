@@ -1,30 +1,36 @@
 import { FormEvent, useEffect, useState } from 'react';
+import axios from 'axios';
 import './App.css';
 
-import { getUserDetailFromLocalStorage } from './utils/localStorage';
-import { handleErrorMessage } from './utils/handleErrorMessage';
+import {
+  addUserDetailToLocalStorage,
+  getUserDetailFromLocalStorage,
+} from './utils/localStorage';
+import {
+  handleErrorMessage,
+  handleSuccessMessage,
+} from './utils/handleErrorMessage';
 import SelectSectors from './components/SelectSectors';
 import FormAction from './components/forms/FormAction';
 import FormExtra from './components/forms/FormExtra';
 import DisplayData from './components/DisplayData';
 import NameInput from './components/NameInput';
-import { SectorItem } from './utils/types';
-import data from './index.json';
+import { SectorItem, UserData } from './utils/types';
 import useFetchSectorsFormData from './useFetch';
+
+import data from './index.json';
 
 function App() {
   const [name, setName] = useState('');
-  const [sectors, SetSectors] = useState<SectorItem[]>([]);
+  const [sectors, setSectors] = useState<SectorItem[]>([]);
   const [agreeToTerms, setAgreeToTerms] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [openDropDown, setOpenDropDown] = useState(false);
-  const [userData, setUserData] = useState(null);
+  const [userData, setUserData] = useState<UserData | null>(null);
+  const [isDisplayUserData, setIsDisplayUserData] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
 
-  const fetchedSectorsFormData = useFetchSectorsFormData();
-
-  if (fetchedSectorsFormData) {
-    console.log(fetchedSectorsFormData);
-  }
+  const fetchedSectorsFormData = useFetchSectorsFormData(isEditing);
 
   useEffect(() => {
     const retrievedName = getUserDetailFromLocalStorage('name');
@@ -33,36 +39,68 @@ function App() {
 
     if (retrievedName) setName(retrievedName);
     if (retrievedAgreeToTerms) setAgreeToTerms(retrievedAgreeToTerms);
-    if (retrievedSectors?.length > 0) SetSectors(retrievedSectors);
+    if (retrievedSectors?.length > 0) setSectors(retrievedSectors);
   }, []);
 
-  useEffect(() => {}, []);
+  const postData = async (arg: UserData) => {
+    setIsLoading(true);
+    try {
+      const apiUrl = !isEditing
+        ? 'http://localhost:5000/user-details'
+        : `http://localhost:5000/user-details/${userData?._id}`;
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+      const { data } = await axios.post(apiUrl, arg);
+      if (data) {
+        setIsEditing(false);
+        handleSuccessMessage('Data saved successfully');
+        setName(data?.name);
+        setAgreeToTerms(data?.agreeToTerms);
+        setSectors(data?.sectors);
+        addUserDetailToLocalStorage({ key: 'userSavedToDb', val: data });
+        setUserData(data);
+        setIsDisplayUserData(true);
+      }
+      setIsLoading(false);
+    } catch (error) {
+      setIsLoading(false);
+      handleErrorMessage('An error occured');
+      console.error('Error posting data:', error);
+    }
+    setIsLoading(false);
+  };
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!name) handleErrorMessage('Please enter your name');
-
-    if (name && sectors.length === 0) {
+    if (name && sectors.length === 0)
       handleErrorMessage('Please choose sectors');
-      setOpenDropDown(true);
-    }
 
     if (name && sectors.length > 0 && agreeToTerms === false)
       handleErrorMessage('Please agree to terms');
 
     if (!name || sectors.length === 0 || agreeToTerms === false) return;
 
-    console.log('Form submitted:', 'Hello');
+    !isEditing
+      ? postData({ name, sectors, agreeToTerms })
+      : postData({ _id: userData?._id, name, sectors, agreeToTerms });
   };
 
+  useEffect(() => {
+    const retrievedUser = getUserDetailFromLocalStorage('userSavedToDb');
+    if (retrievedUser) {
+      setUserData(retrievedUser);
+      setIsDisplayUserData(true);
+    }
+  }, []);
+
   return (
-    <div>
-      {!userData ? (
+    <>
+      {!userData || isDisplayUserData === false ? (
         <form onSubmit={handleSubmit} className="grid justify-center">
           <NameInput name={name} setName={setName} />
           <SelectSectors
-            data={data}
-            onChange={SetSectors}
+            data={fetchedSectorsFormData}
+            onChange={setSectors}
             sectors={sectors}
             openDropDown={openDropDown}
             setOpenDropDown={setOpenDropDown}
@@ -71,12 +109,20 @@ function App() {
             agreeToTerms={agreeToTerms}
             setAgreeToTerms={setAgreeToTerms}
           />
-          <FormAction action="submit" isLoading={isLoading} text="Submit" />
+          <FormAction
+            action="submit"
+            isLoading={isLoading}
+            text={!isEditing ? 'Submit' : 'Edit'}
+          />
         </form>
       ) : (
-        DisplayData()
+        <DisplayData
+          userData={userData}
+          setIsDisplayUserData={setIsDisplayUserData}
+          setIsEditing={setIsEditing}
+        />
       )}
-    </div>
+    </>
   );
 }
 
