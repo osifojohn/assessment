@@ -46,8 +46,8 @@ function App() {
     setIsLoading(true);
     try {
       const apiUrl = !isEditing
-        ? 'http://localhost:5000/user-details'
-        : `http://localhost:5000/user-details/${userData?._id}`;
+        ? 'https://task-w3z1.onrender.com/user-details'
+        : `https://task-w3z1.onrender.com/user-details/${userData?._id}`;
 
       const { data } = await axios.post(apiUrl, arg);
       if (data) {

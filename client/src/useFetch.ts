@@ -6,9 +6,9 @@ const useFetchSectorsFormData = (isEditing: boolean) => {
   const [other, setOther] = useState({});
   const [service, setService] = useState({});
 
-  const manufacturingApi = `http://localhost:5000/sectors/manufacturing`;
-  const serviceApi = `http://localhost:5000/sectors/service`;
-  const otherApi = 'http://localhost:5000/sectors/other';
+  const manufacturingApi = `https://task-w3z1.onrender.com/sectors/manufacturing`;
+  const serviceApi = `https://task-w3z1.onrender.com/sectors/service`;
+  const otherApi = 'https://task-w3z1.onrender.com/sectors/other';
 
   const getManufacturing = axios.get(manufacturingApi);
   const getService = axios.get(serviceApi);
