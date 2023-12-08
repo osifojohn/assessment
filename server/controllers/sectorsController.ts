@@ -6,7 +6,7 @@ import { ServicesSector } from '../models/sectors/service';
 import { sectorsData } from '../sectors';
 import { ManufacturingSector } from '../models/sectors/manufacturing';
 
-const MANUFACTURING_SECTOR_ID = '6572047af214fc089d287b1f';
+const MANUFACTURING_SECTOR_ID = '657371df88ff5e105c937055';
 const OTHER_SECTOR_ID = '6571998e7776d69e64b6bde6';
 const SERVICE_SECTOR_ID = '65719dfd1b637b27c8e7bd34';
 
@@ -58,7 +58,9 @@ export const addManufacturingSector = asyncHandler(
     console.log('goooof');
 
     const reqData = req.body;
-    const sector = await ManufacturingSector.create(reqData);
+    const sector = new ManufacturingSector(reqData);
+
+    sector.save();
 
     res.status(STATUSCODE.CREATED).json({
       data: sector,

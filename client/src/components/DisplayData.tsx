@@ -10,6 +10,7 @@ export default function DisplayData({
     setIsDisplayUserData(false);
     setIsEditing(true);
   };
+
   return (
     <div className="flex flex-col justify-center items-center">
       <div className="mb-8 mt-10 [&>*]:mb-5">

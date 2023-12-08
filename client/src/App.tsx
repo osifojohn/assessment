@@ -95,7 +95,7 @@ function App() {
 
   return (
     <>
-      {!userData || isDisplayUserData === false ? (
+      {!userData || isDisplayUserData === false || isEditing ? (
         <form onSubmit={handleSubmit} className="grid justify-center">
           <NameInput name={name} setName={setName} />
           <SelectSectors
