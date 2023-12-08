@@ -116,7 +116,6 @@ const ManufacturingSectorSchema = new Schema({
             required: true,
           },
         },
-        // ... continue as needed for more nested children
       ],
     },
   ],
