@@ -10,6 +10,7 @@ import DisplayData from './components/DisplayData';
 import NameInput from './components/NameInput';
 import { SectorItem } from './utils/types';
 import data from './index.json';
+import useFetchSectorsFormData from './useFetch';
 
 function App() {
   const [name, setName] = useState('');
@@ -18,6 +19,12 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [openDropDown, setOpenDropDown] = useState(false);
   const [userData, setUserData] = useState(null);
+
+  const fetchedSectorsFormData = useFetchSectorsFormData();
+
+  if (fetchedSectorsFormData) {
+    console.log(fetchedSectorsFormData);
+  }
 
   useEffect(() => {
     const retrievedName = getUserDetailFromLocalStorage('name');
@@ -29,13 +36,7 @@ function App() {
     if (retrievedSectors?.length > 0) SetSectors(retrievedSectors);
   }, []);
 
-  useEffect(() => {
-    // Save to local storage, if you like
-    // setIsLoading(true);
-    console.log(sectors);
-    console.log(name);
-    console.log(agreeToTerms);
-  }, [sectors, name, agreeToTerms]);
+  useEffect(() => {}, []);
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
