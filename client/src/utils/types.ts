@@ -38,12 +38,14 @@ export interface SelectProps {
   sectors: SectorItem[];
   openDropDown: boolean;
   setOpenDropDown: Dispatch<SetStateAction<boolean>>;
+  sectorsIsLoading: boolean;
 }
 
 export interface SelectToggleProps {
   setOpenDropDown: Dispatch<SetStateAction<boolean>>;
   openDropDown: boolean;
   count: number;
+  sectorsIsLoading: boolean;
 }
 
 export interface FormActionProps {
