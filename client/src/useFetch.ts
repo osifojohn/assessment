@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
+import { handleErrorMessage } from './utils/handleErrorMessage';
 
 const useFetchSectorsFormData = (isEditing: boolean) => {
   const [manufacturing, setManufacturing] = useState({});
@@ -17,6 +18,9 @@ const useFetchSectorsFormData = (isEditing: boolean) => {
       }
     } catch (error) {
       console.error('Error fetching sectors:', error);
+      handleErrorMessage(
+        'Backend not connected, pls reload after some minutes'
+      );
     }
   };
 

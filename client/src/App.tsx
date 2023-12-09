@@ -72,15 +72,11 @@ function App() {
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!name) handleErrorMessage('Please enter your name');
-    if (name && sectors.length === 0)
-      handleErrorMessage('Please choose sectors');
 
-    if (name && sectors.length > 0 && agreeToTerms === false)
-      handleErrorMessage('Please agree to terms');
-
-    if (!name || sectors.length === 0 || agreeToTerms === false) return;
-
+    if (!name || sectors.length === 0 || agreeToTerms === false) {
+      handleErrorMessage('Please enter all fields');
+      return;
+    }
     !isEditing
       ? postData({ name, sectors, agreeToTerms })
       : postData({ _id: userData?._id, name, sectors, agreeToTerms });
@@ -97,7 +93,11 @@ function App() {
   return (
     <>
       {!userData || isDisplayUserData === false || isEditing ? (
-        <form onSubmit={handleSubmit} className="grid justify-center">
+        <form
+          onClick={(e) => e.stopPropagation()}
+          onSubmit={handleSubmit}
+          className="grid justify-center"
+        >
           <NameInput name={name} setName={setName} />
           <SelectSectors
             data={fetchedSectorsFormData as SectorItem[]}
