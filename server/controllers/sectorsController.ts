@@ -4,25 +4,48 @@ import { OtherSector } from '../models/sectors/other';
 import { STATUSCODE } from '../types';
 import { ServicesSector } from '../models/sectors/service';
 import {
-  manufacturingSector,
-  otherSector,
+  manufacturingSectorData,
+  otherSectorData,
   sectorsData,
-  serviceSector,
+  serviceSectorData,
 } from '../sectors';
 import { ManufacturingSector } from '../models/sectors/manufacturing';
+import { AllSector } from '../models/sectors/allSectors';
 
 const MANUFACTURING_SECTOR_ID = '657371df88ff5e105c937055';
 const OTHER_SECTOR_ID = '6571998e7776d69e64b6bde6';
 const SERVICE_SECTOR_ID = '65719dfd1b637b27c8e7bd34';
 
-export const getAllSectors = (req: Request, res: Response) => {
-  const sectors = sectorsData;
-  return res.json(sectors);
+const ALL_SECTORS_ID = '6574428ebb6da5a7d6c5721f';
+
+export const getAllSectors = asyncHandler(
+  async (req: Request, res: Response) => {
+    const allSectorsId = req.body;
+    const foundSectors = await AllSector.findById(ALL_SECTORS_ID);
+    res.json(foundSectors);
+  }
+);
+
+export const addAllSectors = async (req: Request, res: Response) => {
+  try {
+    const newSector = new AllSector({
+      manufacturing: manufacturingSectorData,
+      other: otherSectorData,
+      service: serviceSectorData,
+    });
+
+    const savedSector = await newSector.save();
+    res.json(savedSector);
+  } catch (error) {
+    console.log('error', error);
+    throw new Error('An error occured');
+  }
 };
 
 export const addOtherSector = asyncHandler(
   async (req: Request, res: Response) => {
     const reqData = req.body;
+
     const sector = await OtherSector.create(reqData);
 
     res.status(STATUSCODE.CREATED).json({
@@ -33,9 +56,8 @@ export const addOtherSector = asyncHandler(
 
 export const getOtherSector = asyncHandler(
   async (req: Request, res: Response) => {
-    // const other = await OtherSector.findById(OTHER_SECTOR_ID);
-    const otherSectorData = otherSector;
-    res.json(otherSectorData);
+    const other = await OtherSector.findById(OTHER_SECTOR_ID);
+    res.json(other);
   }
 );
 
@@ -52,16 +74,14 @@ export const addServiceSector = asyncHandler(
 
 export const getServiceSector = asyncHandler(
   async (req: Request, res: Response) => {
-    // const service = await ServicesSector.findById(SERVICE_SECTOR_ID);
-    const serviceSectorData = serviceSector;
-    res.json(serviceSectorData);
+    const service = await ServicesSector.findById(SERVICE_SECTOR_ID);
+    // const serviceSectorData = serviceSector;
+    res.json(service);
   }
 );
 
 export const addManufacturingSector = asyncHandler(
   async (req: Request, res: Response) => {
-    console.log('goooof');
-
     const reqData = req.body;
     const sector = new ManufacturingSector(reqData);
 
@@ -75,12 +95,10 @@ export const addManufacturingSector = asyncHandler(
 
 export const getManufacturingSector = asyncHandler(
   async (req: Request, res: Response) => {
-    // const manufacturing = await ManufacturingSector.findById(
-    //   MANUFACTURING_SECTOR_ID
-    // );
+    const manufacturing = await ManufacturingSector.findById(
+      MANUFACTURING_SECTOR_ID
+    );
 
-    const manufacturingSectorData = manufacturingSector;
-
-    res.json(manufacturingSectorData);
+    res.json(manufacturing);
   }
 );

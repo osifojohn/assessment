@@ -280,7 +280,7 @@ export const sectorsData = [
   },
 ];
 
-export const manufacturingSector = {
+export const manufacturingSectorData = {
   name: 'Manufacturing',
   children: [
     {
@@ -302,13 +302,13 @@ export const manufacturingSector = {
           name: 'Meat &amp; meat products',
         },
         {
-          name: 'Milk &amp; dairy products ',
+          name: 'Milk  dairy products ',
         },
         {
           name: 'Other',
         },
         {
-          name: 'Sweets &amp; snack food',
+          name: 'Sweets snack food',
         },
       ],
     },
@@ -322,16 +322,7 @@ export const manufacturingSector = {
           name: 'Bedroom',
         },
         {
-          name: 'Bedroom',
-        },
-        {
           name: 'Children’s room',
-        },
-        {
-          name: 'Children’s room',
-        },
-        {
-          name: 'Kitchen',
         },
         {
           name: 'Kitchen',
@@ -492,7 +483,7 @@ export const manufacturingSector = {
   ],
 };
 
-export const otherSector = {
+export const otherSectorData = {
   name: 'Other',
   children: [
     {
@@ -507,7 +498,7 @@ export const otherSector = {
   ],
 };
 
-export const serviceSector = {
+export const serviceSectorData = {
   name: 'Services',
   children: [
     {
@@ -524,9 +515,6 @@ export const serviceSector = {
         },
         {
           name: 'Programming, Consultancy',
-        },
-        {
-          name: 'Software, Hardware',
         },
         {
           name: 'Software, Hardware',

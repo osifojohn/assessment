@@ -1,32 +1,14 @@
 import { Schema, InferSchemaType, model } from 'mongoose';
+import { ManufacturingSector } from './manufacturing';
+import { OtherSector } from './other';
+import { ServicesSector } from './service';
 
-const allSectorsSchema = new Schema({
-  name: {
-    type: String,
-    required: true,
-  },
-  children: [
-    {
-      name: {
-        type: String,
-        required: true,
-      },
-    },
-    {
-      name: {
-        type: String,
-        required: true,
-      },
-    },
-    {
-      name: {
-        type: String,
-        required: true,
-      },
-    },
-  ],
+const AllSectorSchema = new Schema({
+  manufacturing: ManufacturingSector.schema,
+  other: OtherSector.schema,
+  service: ServicesSector.schema,
 });
 
-type allSectorsType = InferSchemaType<typeof allSectorsSchema>;
-const allSectors = model<allSectorsType>('allSectors', allSectorsSchema);
-export { allSectorsType, allSectors };
+type SectorType = InferSchemaType<typeof AllSectorSchema>;
+const AllSector = model<SectorType>('AllSector', AllSectorSchema);
+export { SectorType, AllSector };

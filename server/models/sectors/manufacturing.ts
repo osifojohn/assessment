@@ -1,124 +1,26 @@
 import { Schema, InferSchemaType, model } from 'mongoose';
 
+const ChildSchema = new Schema({
+  name: {
+    type: String,
+    required: true,
+  },
+});
+
+const ManufacturingSchema = new Schema({
+  name: {
+    type: String,
+    required: true,
+  },
+  children: [ChildSchema],
+});
+
 const ManufacturingSectorSchema = new Schema({
   name: {
     type: String,
     required: true,
   },
-  children: [
-    {
-      name: {
-        type: String,
-        required: true,
-      },
-      children: [
-        {
-          name: {
-            type: String,
-            required: true,
-          },
-        },
-      ],
-    },
-    {
-      name: {
-        type: String,
-        required: true,
-      },
-      children: [
-        {
-          name: {
-            type: String,
-            required: true,
-          },
-        },
-      ],
-    },
-    {
-      name: {
-        type: String,
-        required: true,
-      },
-      children: [
-        {
-          name: {
-            type: String,
-            required: true,
-          },
-        },
-      ],
-    },
-    {
-      name: {
-        type: String,
-        required: true,
-      },
-      children: [
-        {
-          name: {
-            type: String,
-            required: true,
-          },
-        },
-      ],
-    },
-    {
-      name: {
-        type: String,
-        required: true,
-      },
-      children: [
-        {
-          name: {
-            type: String,
-            required: true,
-          },
-        },
-      ],
-    },
-    {
-      name: {
-        type: String,
-        required: true,
-      },
-      children: [
-        {
-          name: {
-            type: String,
-            required: true,
-          },
-        },
-      ],
-    },
-    {
-      name: {
-        type: String,
-        required: true,
-      },
-      children: [
-        {
-          name: {
-            type: String,
-            required: true,
-          },
-        },
-      ],
-    },
-    {
-      name: {
-        type: String,
-        required: true,
-      },
-      children: [
-        {
-          name: {
-            type: String,
-            required: true,
-          },
-        },
-      ],
-    },
-  ],
+  children: [ManufacturingSchema],
 });
 
 type ManufacturingSectorType = InferSchemaType<

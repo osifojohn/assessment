@@ -1,5 +1,6 @@
 import express from 'express';
 import {
+  addAllSectors,
   addManufacturingSector,
   addOtherSector,
   addServiceSector,
@@ -8,11 +9,11 @@ import {
   getOtherSector,
   getServiceSector,
 } from '../controllers/sectorsController';
-import { get } from 'http';
 
 const router = express.Router();
 
-router.get('/', getAllSectors);
+router.get('/all-sectors', getAllSectors);
+router.post('/all-sectors', addAllSectors);
 
 router.post('/manufacturing', addManufacturingSector);
 router.get('/manufacturing', getManufacturingSector);
