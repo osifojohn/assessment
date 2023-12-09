@@ -12,6 +12,7 @@ export default function SelectSectors({
   onChange,
   openDropDown,
   setOpenDropDown,
+  sectorsIsLoading,
 }: SelectProps) {
   const dropDownRef = useRef(null);
 
@@ -98,6 +99,7 @@ export default function SelectSectors({
         openDropDown={openDropDown}
         setOpenDropDown={setOpenDropDown}
         count={sectors.length}
+        sectorsIsLoading={sectorsIsLoading}
       />
       {dropdown}
     </div>

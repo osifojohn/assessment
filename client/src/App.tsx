@@ -31,17 +31,8 @@ function App() {
   const [isDisplayUserData, setIsDisplayUserData] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
 
-  const fetchedSectorsFormData = useFetchSectorsFormData(isEditing);
-
-  useEffect(() => {
-    const retrievedName = getUserDetailFromLocalStorage('name');
-    const retrievedAgreeToTerms = getUserDetailFromLocalStorage('agreeToTerms');
-    const retrievedSectors = getUserDetailFromLocalStorage('sectors');
-
-    if (retrievedName) setName(retrievedName);
-    if (retrievedAgreeToTerms) setAgreeToTerms(retrievedAgreeToTerms);
-    if (retrievedSectors?.length > 0) setSectors(retrievedSectors);
-  }, []);
+  const { error, fetchedSectorsFormData, sectorsIsLoading } =
+    useFetchSectorsFormData(isEditing);
 
   const postData = async (arg: UserData) => {
     setIsLoading(true);
@@ -70,41 +61,59 @@ function App() {
     setIsLoading(false);
   };
 
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
+    if (!name) handleErrorMessage('Name required');
+
+    if (name && sectors.length === 0) handleErrorMessage('Sectors required');
+    if (name && sectors.length > 0 && agreeToTerms === false)
+      handleErrorMessage('Agree to terms is required');
+
     if (!name || sectors.length === 0 || agreeToTerms === false) {
-      handleErrorMessage('Please enter all fields');
       return;
     }
+
     !isEditing
       ? postData({ name, sectors, agreeToTerms })
       : postData({ _id: userData?._id, name, sectors, agreeToTerms });
   };
 
   useEffect(() => {
+    const retrievedName = getUserDetailFromLocalStorage('name');
+    const retrievedAgreeToTerms = getUserDetailFromLocalStorage('agreeToTerms');
+    const retrievedSectors = getUserDetailFromLocalStorage('sectors');
+
+    if (retrievedName) setName(retrievedName);
+    if (retrievedAgreeToTerms) setAgreeToTerms(retrievedAgreeToTerms);
+    if (retrievedSectors?.length > 0) setSectors(retrievedSectors);
+
     const retrievedUser = getUserDetailFromLocalStorage('userSavedToDb');
+
     if (retrievedUser) {
       setUserData(retrievedUser);
       setIsDisplayUserData(true);
     }
   }, []);
 
+  useEffect(() => {
+    if (error === true || !fetchedSectorsFormData?.length)
+      handleErrorMessage('Server not live yet, pls reload');
+  }, [error, fetchedSectorsFormData]);
+
   return (
     <>
       {!userData || isDisplayUserData === false || isEditing ? (
-        <form
-          onClick={(e) => e.stopPropagation()}
-          onSubmit={handleSubmit}
-          className="grid justify-center"
-        >
+        <form onSubmit={handleSubmit} className="grid justify-center">
           <NameInput name={name} setName={setName} />
+
           <SelectSectors
             data={fetchedSectorsFormData as SectorItem[]}
             onChange={setSectors}
             sectors={sectors}
             openDropDown={openDropDown}
             setOpenDropDown={setOpenDropDown}
+            sectorsIsLoading={sectorsIsLoading}
           />
           <FormExtra
             agreeToTerms={agreeToTerms}

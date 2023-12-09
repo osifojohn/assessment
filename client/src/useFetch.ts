@@ -1,26 +1,33 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
-import { handleErrorMessage } from './utils/handleErrorMessage';
 
 const useFetchSectorsFormData = (isEditing: boolean) => {
   const [manufacturing, setManufacturing] = useState({});
   const [other, setOther] = useState({});
   const [service, setService] = useState({});
+  const [error, setError] = useState(false);
+  const [sectorsIsLoading, setSectorsIsLoading] = useState(false);
 
   const fetchData = async () => {
+    const timeout = 8000;
+    setSectorsIsLoading(true);
     try {
       const apiUrl = 'https://task-w3z1.onrender.com/sectors/all-sectors';
-      const { data } = await axios.get(apiUrl);
+
+      const { data } = await axios.get(apiUrl, { timeout });
       if (data) {
+        setSectorsIsLoading(false);
+        setError(false);
         setManufacturing(data.manufacturing);
         setOther(data.other);
         setService(data.service);
       }
     } catch (error) {
+      setSectorsIsLoading(false);
+      setError(true);
       console.error('Error fetching sectors:', error);
-      handleErrorMessage(
-        'Backend not connected, pls reload after some minutes'
-      );
+    } finally {
+      setSectorsIsLoading(false);
     }
   };
 
@@ -28,7 +35,11 @@ const useFetchSectorsFormData = (isEditing: boolean) => {
     !isEditing && fetchData();
   }, []);
 
-  return [manufacturing, other, service];
+  return {
+    error,
+    fetchedSectorsFormData: [manufacturing, other, service],
+    sectorsIsLoading,
+  };
 };
 
 export default useFetchSectorsFormData;

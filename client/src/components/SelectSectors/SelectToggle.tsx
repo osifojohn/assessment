@@ -5,10 +5,13 @@ export const SelectSectorsToggle = ({
   openDropDown,
   setOpenDropDown,
   count,
+  sectorsIsLoading,
 }: SelectToggleProps) => {
-  // const [open, setOpen] = state;
+  const handleClick = (e: React.MouseEvent) => {
+    e.preventDefault();
 
-  const handleClick = () => setOpenDropDown(!openDropDown);
+    setOpenDropDown(!openDropDown);
+  };
 
   return (
     <>
@@ -19,7 +22,11 @@ export const SelectSectorsToggle = ({
         className=" w-[350px] h-[40px] border-[1.5px] rounded-lg text-left px-3 "
         onClick={handleClick}
       >
-        {count > 0 ? `${count} selected` : 'Select'}
+        {count > 0
+          ? `${count} selected`
+          : sectorsIsLoading
+          ? 'Loading...'
+          : 'Select'}
       </button>
     </>
   );
