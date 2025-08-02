@@ -48,10 +48,10 @@ export const InputField: React.FC<InputFieldProps> = ({
       {error && (
         <p
           id={`${id}-error`}
-          className="text-sm text-red-600 dark:text-red-400 flex items-center mt-1"
+          className="text-sm text-red-600  dark:text-red-400 flex items-center mt-1"
           role="alert"
         >
-          <span className="w-4 h-4 mr-1">⚠</span>
+          <span className=" mr-1">⚠</span>
           {error}
         </p>
       )}

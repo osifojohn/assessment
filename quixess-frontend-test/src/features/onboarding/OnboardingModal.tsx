@@ -1,10 +1,9 @@
 import { useCallback, useState } from 'react';
 import { useOnboardingForm } from '../../hooks/useOnboardingForm';
 import type {
-  AccountSetup,
+  FormStepProps,
   OnboardingFormData,
-  PersonalInfo,
-  Preferences,
+  OnboardingStepData,
   StepConfig,
 } from '../../types';
 import { PersonalInfoStep } from './components/steps/PersonalInfoStep';
@@ -25,24 +24,30 @@ export const OnboardingModal: React.FC = () => {
     resetForm,
   } = useOnboardingForm();
 
-  const steps: StepConfig[] = [
+  const steps: StepConfig<OnboardingStepData>[] = [
     {
       id: 0,
       title: 'Personal Info',
       icon: '/icons/user.svg',
-      component: PersonalInfoStep,
+      component: PersonalInfoStep as React.ComponentType<
+        FormStepProps<OnboardingStepData>
+      >,
     },
     {
       id: 1,
       title: 'Account Setup',
       icon: '/icons/settings.svg',
-      component: AccountSetupStep,
+      component: AccountSetupStep as React.ComponentType<
+        FormStepProps<OnboardingStepData>
+      >,
     },
     {
       id: 2,
       title: 'Preferences',
       icon: '/icons/palette.svg',
-      component: PreferencesStep,
+      component: PreferencesStep as React.ComponentType<
+        FormStepProps<OnboardingStepData>
+      >,
     },
   ];
 
@@ -79,8 +84,8 @@ export const OnboardingModal: React.FC = () => {
 
     return (
       <StepComponent
-        data={stepData}
-        onChange={(data: PersonalInfo | AccountSetup | Preferences) =>
+        data={stepData as OnboardingStepData}
+        onChange={(data: OnboardingStepData) =>
           updateFormData(stepKey as keyof OnboardingFormData, data)
         }
         errors={errors}

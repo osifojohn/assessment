@@ -1,5 +1,5 @@
 export interface BaseFormData {
-  [key: string]: any;
+  [key: string]: string | boolean | number | undefined;
 }
 
 export interface PersonalInfo extends BaseFormData {
@@ -27,14 +27,16 @@ export interface ValidationErrors {
   [key: string]: string;
 }
 
-export interface StepConfig {
+export type OnboardingStepData = PersonalInfo | AccountSetup | Preferences;
+
+export interface StepConfig<T = OnboardingStepData> {
   id: number;
   title: string;
   icon: string;
-  component: React.ComponentType<any>;
+  component: React.ComponentType<FormStepProps<T>>;
 }
 
-export interface FormStepProps<T = BaseFormData> {
+export interface FormStepProps<T = OnboardingStepData> {
   data: T;
   onChange: (data: T) => void;
   errors?: ValidationErrors;

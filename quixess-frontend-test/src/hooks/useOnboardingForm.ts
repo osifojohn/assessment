@@ -17,6 +17,27 @@ export const useOnboardingForm = () => {
       data: OnboardingFormData[K]
     ) => {
       setFormData((prev) => ({ ...prev, [section]: data }));
+
+      let validationErrors: ValidationErrors = {};
+      if (section === 'personalInfo') {
+        validationErrors = ValidationService.validatePersonalInfo(
+          data as OnboardingFormData['personalInfo']
+        );
+      } else if (section === 'accountSetup') {
+        validationErrors = ValidationService.validateAccountSetup(
+          data as OnboardingFormData['accountSetup']
+        );
+      }
+
+      setErrors((prev) => {
+        const newErrors = { ...prev };
+        Object.keys(data as object).forEach((fieldName) => {
+          if (!validationErrors[fieldName]) {
+            delete newErrors[fieldName];
+          }
+        });
+        return newErrors;
+      });
     },
     []
   );
